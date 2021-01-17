@@ -17,7 +17,7 @@ VERAM = "veram"
 #########################
 
 def pause():
-	""" Does 'Press any key to continue' """
+    """ Does 'Press any key to continue' """
     if os.name == "nt":
         print()
         os.system("pause")

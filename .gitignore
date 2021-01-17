@@ -13,3 +13,6 @@ venv.bak/
 
 # fetools library
 fetools/*.bat
+fetools/build/
+fetools/dist/
+fetools/fetools.egg-info/
