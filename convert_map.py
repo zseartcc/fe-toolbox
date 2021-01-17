@@ -8,7 +8,7 @@
 #       (lat1, lon1, lat2, lon2, color),
 #       ...
 #   ]
-# 
+#
 # Once in this intermediate state, it can be written to any of these formats:
 #   VRC diagram
 #   vSTARS VideoMap
@@ -17,7 +17,6 @@
 
 from tkinter import Tk
 from tkinter.filedialog import askopenfile, asksaveasfile
-from xml.dom.minidom import Document
 from sys import exit
 import re
 import os
@@ -66,11 +65,33 @@ def ddToDms(lat: float, lon: float):
 # Map readers
 ##########################
 
+def readVMGM(text, *, nameTag, getColors):
+    """ (Reduces duplicate code) """
+    result = []
+    mapName = re.search(fr'{nameTag}="([^"]*)"', text)
+    lat1s = re.findall(r'StartLat="([^"]*)"', text)
+    lon1s = re.findall(r'StartLon="([^"]*)"', text)
+    lat2s = re.findall(r'EndLat="([^"]*)"', text)
+    lon2s = re.findall(r'EndLon="([^"]*)"', text)
+    # Only get colors when told to
+    if getColors: colors = re.findall(r'Color="([^"]*)"', text)
+    # Note: each list returned by these "re.findall" will be the same size
+    # (assuming the VideoMap is formatted correctly)
+    for i in range(len(lat1s)):
+        # Get lat/lon and color
+        lat1, lat2 = lat1s[i], lat2s[i]
+        lon1, lon2 = lon1s[i], lon2s[i]
+        # Default 'color' to ""
+        color = colors[i] if getColors else ""
+        result.append((lat1, lon1, lat2, lon2, color))
+    # Default mapName to ""
+    return mapName.group(1) if mapName else "Untitled Map", result
+
 def readVideoMap(text):
-    pass
+    return readVMGM(text, nameTag="LongName", getColors=True)
 
 def readGeoMap(text):
-    pass
+    return readVMGM(text, nameTag="Description", getColors=False)
 
 
 ##########################
@@ -96,7 +117,6 @@ def writeVideoMap(file, mapName, coords):
     # Create VideoMap tag (root)
     file.write(f'<VideoMap ShortName="{mapName.strip()[:6]}" LongName="{mapName.strip()}"')
     file.write(' STARSGroup="A" STARSTDMOnly="false" VisibleInList="true">\n')
-    file.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n')
     # Create empty 'Colors' section
     file.write('  <Colors>\n    <NamedColor Red="" Green="" Blue=""')
     file.write(' Name="Change this line to create colors"/>\n  </Colors>\n')
@@ -117,8 +137,7 @@ def writeVideoMap(file, mapName, coords):
 def writeGeoMap(file, mapName, coords):
     # Create GeoMapObject tag (root)
     file.write(f'<GeoMapObject Description="{mapName.strip()}"')
-    file.write(' TdmOnly="false"')
-    file.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n')
+    file.write(' TdmOnly="false">\n')
     # Create LineDefaults tag
     file.write('  <LineDefaults Bcg="1" Filters="1" Style="Solid" Thickness="1"/>\n')
     # Write Elements
