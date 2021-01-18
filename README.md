@@ -1,4 +1,4 @@
-# fe-utilities
+# FE Stuff
 Scripts 'n things to make life a little easier for VATSIM FEs.
 
 ## Requirements
