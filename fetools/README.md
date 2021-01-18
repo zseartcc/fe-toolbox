@@ -20,5 +20,8 @@ Coming soon.
 
 ## Changelog
 
+#### `1.0.1` (17 Jan 2021)
+- Squash bugs
+
 #### `1.0.0` (17 Jan 2021)
-- Misc. helper functions
+- Add some misc. helper functions
