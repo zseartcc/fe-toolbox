@@ -7,7 +7,7 @@ A toolset for VATUSA FEs.
 
 
 ## Installation
-Run `pip install fetools` from the terminal
+Run `pip install fetools` from the command line
 
 
 ## Documentation
