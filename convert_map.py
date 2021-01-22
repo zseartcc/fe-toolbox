@@ -157,7 +157,7 @@ def writeAutoCad(file, mapName, coords):
     file.write(f"; {mapName}\n")
     for segment in coords:
         lat1, lon1, lat2, lon2, color = segment
-        file.write(f"LINE {lat1},{lon1} {lat2},{lon2}\n")
+        file.write(f"LINE {lon1},{lat1} {lon2},{lat2}\n")
 
 
 ##########################
