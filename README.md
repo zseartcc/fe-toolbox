@@ -1,5 +1,5 @@
 # FE Stuff
-Scripts 'n things to make life a little easier for VATSIM FEs.
+Scripts 'n things to make life a little easier for VATUSA FEs.
 
 ## Requirements
 - Python scripts require [Python](https://www.python.org/downloads/) 3.6+
