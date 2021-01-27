@@ -1,0 +1,24 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+scope: source
+contexts:
+  main:
+    # Comments
+    - match: ';'
+      scope: comment.line
+      push:
+        - meta_scope: comment.line
+        - match: \n
+          pop: true
+    # Alias commands
+    - match: '^\.\w+'
+      scope: keyword.declaration.function
+    - match: '\.\w+'
+      scope: entity.name.function
+    # Variables/functions ($1, $radioname())
+    - match: '\$\w+'
+      scope: support.function
+    # Parentheses
+    - match: '[\(\)]'
+      scope: keyword.control.flow
