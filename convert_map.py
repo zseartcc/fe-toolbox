@@ -1,5 +1,6 @@
 # Convert between ATC client video map formats
-# REQUIRES PYTHON 3.6+ (sorry python2-ers)
+# REQUIRES Python 3.6+ (sorry python2-ers),
+#          fetools (get with `pip install fetools`)
 #
 #
 # This script works by converting an entire map into a Python list first:
@@ -18,6 +19,7 @@
 
 from tkinter import Tk
 from tkinter.filedialog import askopenfile, asksaveasfile
+from fetools.geomath import ddtodms
 from sys import exit
 import re
 import os
@@ -38,28 +40,6 @@ def err(msg):
     print(msg)
     pause()
     exit()
-
-def ddToDms(lat: float, lon: float):
-    """ Convert coord pair from decimal degrees to Xddd.mm.ss.sss """
-    # Get NESW
-    ns = "N" if lat >= 0 else "S"
-    ew = "E" if lon >= 0 else "W"
-    # Make positive
-    lat = abs(lat)
-    lon = abs(lon)
-    # Floor to get degrees
-    latD = int(lat)
-    lonD = int(lon)
-    # Get minutes
-    latM = 60*(lat - latD)
-    lonM = 60*(lon - lonD)
-    # Get seconds
-    latS = 60*(latM - int(latM))
-    lonS = 60*(lonM - int(lonM))
-    # Assemble the strings
-    latOut = "%s%03.f.%02.f.%06.3f" % (ns, latD, int(latM), latS)
-    lonOut = "%s%03.f.%02.f.%06.3f" % (ew, lonD, int(lonM), lonS)
-    return (latOut, lonOut)
 
 
 ##########################
@@ -108,8 +88,8 @@ def writeSct2(file, mapName, coords):
     file.write(mapName[:26].ljust(26))
     file.write("N000.00.00.000 E000.00.00.000 N000.00.00.000 E000.00.00.000\n")
     for segment in coords:
-        lat1, lon1 = ddToDms(float(segment[0]), float(segment[1]))
-        lat2, lon2 = ddToDms(float(segment[2]), float(segment[3]))
+        lat1, lon1 = ddtodms(float(segment[0]), float(segment[1]))
+        lat2, lon2 = ddtodms(float(segment[2]), float(segment[3]))
         # Don't create trailing spaces if no color exists
         color = " "+segment[4] if segment[4] else ''
         file.write(" "*26 + f"{lat1} {lon1} {lat2} {lon2}{color}\n")
@@ -202,54 +182,36 @@ print("  [1] VRC")
 print("  [2] vSTARS")
 print("  [3] vERAM")
 print("  [4] AutoCAD")
+print()
 while True:
     choice = input("Press Enter when done: ")
     if choice in ('1','2','3', '4'):
         break
 
 # Write converted map
+def writeMap(typename, extension, writer):
+    outFile = asksaveasfile(
+        title="Save map",
+        filetypes=[(typename,"*"+extension)],
+        defaultextension=extension,
+        initialfile=mapName + extension)
+    if not outFile:
+        exit()
+    writer(outFile, mapName, coords)
+    outFile.close()
+
 if choice == '1':
     # Write sct2 diagram
-    outFile = asksaveasfile(
-        title="Save map",
-        filetypes=[("VRC diagrams","*.sct2")],
-        defaultextension=".sct2",
-        initialfile=mapName)
-    if not outFile:
-        exit()
-    writeSct2(outFile, mapName, coords)
+    writeMap("VRC diagram", ".sct2", writeSct2)
 elif choice == '2':
     # Write VideoMap
-    outFile = asksaveasfile(
-        title="Save map",
-        filetypes=[("VideoMap","*.xml")],
-        defaultextension=".xml",
-        initialfile=mapName + ".xml")
-    if not outFile:
-        exit()
-    writeVideoMap(outFile, mapName, coords)
+    writeMap("VideoMap", ".xml", writeVideoMap)
 elif choice == '3':
     # Write GeoMap
-    outFile = asksaveasfile(
-        title="Save map",
-        filetypes=[("GeoMap","*.xml")],
-        defaultextension=".xml",
-        initialfile=mapName + ".xml")
-    if not outFile:
-        exit()
-    writeGeoMap(outFile, mapName, coords)
+    writeMap("GeoMap", ".xml", writeGeoMap)
 elif choice == '4':
     # Write AutoCAD
-    outFile = asksaveasfile(
-        title="Save map",
-        filetypes=[("AutoCAD script","*.scr")],
-        defaultextension=".scr",
-        initialfile=mapName + ".scr")
-    if not outFile:
-        exit()
-    writeAutoCad(outFile, mapName, coords)
-
-outFile.close()
+    writeMap("AutoCAD script", ".scr", writeAutoCad)
 
 print("\nCompleted! Be sure to verify the converted map's name and colors.")
 print("(For vERAM and vSTARS, also check group and TdmOnly settings.)")
