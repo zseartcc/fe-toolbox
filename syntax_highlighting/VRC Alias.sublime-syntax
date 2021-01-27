@@ -14,11 +14,23 @@ contexts:
     # Alias commands
     - match: '^\.\w+'
       scope: keyword.declaration.function
-    - match: '\.\w+'
+    - match: '\s\.\w+'
       scope: entity.name.function
     # Variables/functions ($1, $radioname())
     - match: '\$\w+'
       scope: support.function
-    # Parentheses
-    - match: '[\(\)]'
+      push: function
+
+  function:
+    # Leave right away if no parenthesis
+    - match: '\s'
+      pop: true
+    - match: '\('
       scope: keyword.control.flow
+      push:
+        - include: main
+        - match: '\)'
+          scope: keyword.control.flow
+          pop: true
+    - match: '(?=.*)'
+      pop: true
