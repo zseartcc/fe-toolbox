@@ -2,17 +2,8 @@
 __pycache__/
 *.py[cod]
 
-# Environments
+# Virtual Environments
 .env
 .venv
 env/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# fetools library
-fetools/*.bat
-fetools/build/
-fetools/dist/
-fetools/fetools.egg-info/
