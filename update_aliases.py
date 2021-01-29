@@ -20,7 +20,6 @@ parser.add_argument("facilities", nargs="+", help="One or more vSTARS/vERAM faci
 args = parser.parse_args() if len(sys.argv)>1 else None
 
 
-
 # Hide tkinter window
 Tk().withdraw()
 
