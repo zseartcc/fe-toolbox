@@ -1,3 +1,5 @@
+![release](https://img.shields.io/github/v/release/zseartcc/fe-toolbox)
+
 # FE Stuff
 Scripts 'n things to make life a little easier for VATUSA FEs.
 
