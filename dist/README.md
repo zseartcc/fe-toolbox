@@ -1,0 +1,1 @@
+This folder contains the same scripts as the root folder, but with their dependencies bundled with them. Run `.pyz` files the same way you'd run a regular `.py` Python script.
