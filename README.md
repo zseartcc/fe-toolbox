@@ -1,11 +1,8 @@
-![release](https://img.shields.io/github/v/release/zseartcc/fe-toolbox)
-
-# FE Stuff
+# FE Toolbox
 Scripts 'n things to make life a little easier for VATUSA FEs.
 
 ## Requirements
 - Python scripts require [Python](https://www.python.org/downloads/) 3.6+
-- Some of the Python scripts in this repo require the fetools library. Get it by running `pip install fetools` from the command line.
 
 ## Instructions/Help
 See [Wiki](https://github.com/zseartcc/fe-toolbox/wiki) for instructions on how to use each script/utility.
