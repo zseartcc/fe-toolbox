@@ -1,0 +1,126 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: "Sector File"
+file_extensions:
+  - sct2
+scope: source
+
+variables:
+  runway: '\d{1,2}[LRC]?'
+  coord: '[NESW]\d{3}\.\d{2}\.\d{2}\.\d{3}'
+
+contexts:
+  includes:
+    # Main 'includer'
+    - include: comments
+    - include: coords
+  main:
+    - include: includes
+
+    # Color definitions
+    - match: '#define'
+      scope: storage
+      push: color_defs
+
+    # "Simple" sections
+    - match: '\[(?:INFO|FIXES|ARTCC|ARTCC HIGH|ARTCC LOW|SID|STAR|GEO|REGIONS)\]'
+      scope: markup.heading
+
+    # [VOR]
+    - match: '\[VOR\]'
+      scope: markup.heading
+      push: vor
+
+    # [NDB]
+    - match: '\[NDB\]'
+      scope: markup.heading
+      push: ndb
+
+    # [AIRPORT]
+    - match: '\[AIRPORT\]'
+      scope: markup.heading
+      push: airport
+
+    # [RUNWAY]
+    - match: '\[RUNWAY\]'
+      scope: markup.heading
+      push: runway
+
+    # [LOW AIRWAY] / [HIGH AIRWAY]
+    - match: '\[(?:LOW|HIGH) AIRWAY\]'
+      scope: markup.heading
+      push: airway
+
+    # [LABELS]
+    - match: '\[LABELS\]'
+      scope: markup.heading
+      push: labels
+
+
+  comments:
+    - match: ';'
+      scope: punctuation.definition.comment
+      push:
+        - meta_scope: comment.line
+        - match: $
+          pop: true
+  coords:
+    - match: '([NESW])\d{3}\.\d{2}\.\d{2}\.\d{3}'
+      scope: variable.function
+      captures:
+        1: markup.bold
+  break:
+    - match: '(?=\[)'
+      pop: true
+
+
+  color_defs:
+    # '#define' color definitions
+    - include: includes
+    - match: '(\w+) (\d+)'
+      captures:
+        1: variable
+        2: constant.numeric.integer
+      pop: true
+
+  vor:
+    - include: includes
+    - match: '\b\d{3}\.\d{1,3}\b'
+      scope: entity.name
+    - include: break
+
+  ndb:
+    - include: includes
+    - match: '\b\d{3}\b'
+      scope: entity.name
+    - include: break
+
+  airport:
+    - include: vor
+    # (Airspace class)
+    - match: '\b[BCDEG]\b'
+      scope: constant.numeric
+    - include: break
+
+  runway:
+    - include: includes
+    - match: '^\w+ +\w+ +(\d{1,3} +\d{1,3})'
+      captures:
+        1: constant.numeric
+    - include: break
+
+  airway:
+    - include: includes
+    - match: '(?<!^)\b\w+\b'
+      scope: entity.name
+    - include: break
+
+  labels:
+    - include: includes
+    - match: '"'
+      push:
+        - meta_scope: string.quoted.double
+        - match: '"'
+          pop: true
+    - include: break
