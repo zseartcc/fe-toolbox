@@ -1,5 +1,5 @@
 # FE Toolbox
-Scripts 'n things to make life a little easier for VATUSA FEs.
+To get a script, download it's *.pyz version* from the repo's root folder.
 
 ## Requirements
 - Python scripts require [Python](https://www.python.org/downloads/) 3.6+
