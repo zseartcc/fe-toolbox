@@ -20,6 +20,7 @@
 from tkinter import Tk
 from tkinter.filedialog import askopenfile, asksaveasfile
 from fetools.geomath import ddtodms
+from fetools import pause
 from sys import exit
 import re
 import os
@@ -28,13 +29,6 @@ import os
 ##########################
 # Helper functions
 ##########################
-
-def pause():
-    if os.name == "nt":
-        print()
-        os.system("pause")
-    else:
-        input("\nPress Enter to continue . . . ")
 
 def err(msg):
     print(msg)
