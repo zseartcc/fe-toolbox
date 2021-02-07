@@ -56,7 +56,11 @@ with open(alias_file) as f:
 aliases = aliases.iterfind(".//CommandAlias")
 
 # Replace each facility's CommandAliases tag with the `aliases` one
+i = 0
+total = len(facils)
 for name in facils:
+    i += 1
+    print(f"{i}/{total}")
     # Parse facility
     with gzip.open(name) as facility:
         root = ET.parse(facility).getroot()
@@ -73,5 +77,5 @@ for name in facils:
     # Write new facility!
     with gzip.open(name, "w") as facility:
         # (Remember to make it look nice)
-        ET.indent(root)
-        facility.write(ET.tostring(root))
+        tree = ET.ElementTree(root)
+        tree.write(facility)
