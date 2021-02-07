@@ -53,7 +53,7 @@ with open(alias_file) as f:
     aliases = load(f).dumpxml()
 
 # Extract CommandAlias tags
-aliases = aliases.iterfind(".//CommandAlias")
+aliases = aliases.findall(".//CommandAlias")
 
 # Replace each facility's CommandAliases tag with the `aliases` one
 i = 0
