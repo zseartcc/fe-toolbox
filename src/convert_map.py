@@ -148,11 +148,12 @@ Tk().withdraw()
 
 # Get input file
 print("See file dialog to import video map.")
-with askopenfile(title="Import map", filetypes=[("VideoMap/GeoMap","*.xml")]) as f:
-    # Exit if nothing selected
-    if not f:
-        exit()
-    inText = f.read()
+inFile = askopenfile(title="Import map", filetypes=[("VideoMap/GeoMap","*.xml")])
+# Exit if nothing selected
+if not inFile:
+    exit()
+inText = inFile.read()
+inFile.close()
 
 if "<VideoMap" in inText:
     if "ASDEX" in inText:
@@ -178,7 +179,7 @@ print("  [3] vERAM")
 print("  [4] AutoCAD")
 print()
 while True:
-    choice = input("Press Enter when done: ")
+    choice = input("Type a number then press Enter: ")
     if choice in ('1','2','3', '4'):
         break
 
