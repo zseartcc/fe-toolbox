@@ -4,7 +4,7 @@ This folder stores all the regular .py scripts.
 
 _______
 
-
-- "fetools" required by:
-  - convert_map.py
-  - update_aliases.py
+| Script | Dependencies |
+| :------: | ---------- |
+| convert_map.py | fetools |
+| update_aliases.py | fetools |
