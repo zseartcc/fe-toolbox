@@ -1,5 +1,5 @@
 # REQUIRES fetools library
-# (pip install fetools)s
+# (pip install fetools)
 
 
 from fetools.alias import load
@@ -76,6 +76,5 @@ for name in facils:
     root.find(".//CommandAliasesLastImported").text = time
     # Write new facility!
     with gzip.open(name, "w") as facility:
-        # (Remember to make it look nice)
         tree = ET.ElementTree(root)
         tree.write(facility)
