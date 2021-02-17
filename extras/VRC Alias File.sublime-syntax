@@ -16,7 +16,7 @@ contexts:
       scope: keyword.declaration.function
     - match: '\s\.\w+'
       scope: entity.name.function
-    # Variables/functions ($1, $radioname())
+    # Variables/functions ($1, $radioname(), ...)
     - match: '\$\w+'
       scope: support.function
       push: function
