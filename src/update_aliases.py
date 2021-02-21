@@ -76,5 +76,9 @@ for name in facils:
     root.find(".//CommandAliasesLastImported").text = time
     # Write new facility!
     with gzip.open(name, "w") as facility:
-        tree = ET.ElementTree(root)
-        tree.write(facility)
+        # (ET.indent only works in Python 3.9+)
+        try:
+            ET.indent(root)
+        except:
+            pass
+        facility.write(ET.tostring(root, encoding="unicode"))
