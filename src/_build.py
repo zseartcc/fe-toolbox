@@ -1,3 +1,5 @@
+""" IGNORE THIS FILE. INTERNAL UTILITY. """
+
 import subprocess
 import shutil
 import sys
