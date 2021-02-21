@@ -50,7 +50,7 @@ print("Working...")
 
 # Convert alias format
 with open(alias_file) as f:
-    aliases = load(f).dumpxml()
+    aliases = load(f)._dumpxml()
 
 # Extract CommandAlias tags
 aliases = aliases.findall(".//CommandAlias")
