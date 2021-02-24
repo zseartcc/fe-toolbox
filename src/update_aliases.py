@@ -81,4 +81,4 @@ for name in facils:
             ET.indent(root)
         except:
             pass
-        facility.write(ET.tostring(root, encoding="unicode"))
+        facility.write(ET.tostring(root))
