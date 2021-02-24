@@ -1,3 +1,5 @@
+""" IGNORE THIS FILE. INTERNAL UTILITY. """
+
 import subprocess
 import shutil
 import sys
@@ -15,7 +17,7 @@ shutil.copyfile(fpath, os.getcwd() + "\\__main__.py")
 
 for r in reqs:
 	if r.strip():
-		subprocess.check_call([sys.executable, "-m", "pip", "install", r, "--target", "."])
+		subprocess.check_call([sys.executable, "-m", "pip", "install", r.strip(), "--target", "."])
 
 for f in os.listdir():
 	if f.endswith("-info"):
